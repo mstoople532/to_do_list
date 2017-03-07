@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+# This is a magic comment for Bash to load rbenv ruby.
+
+# Do not change this code.  You must implement this class in your code
+require_relative "todo_cli"
+TodoCli.new(ARGV)
