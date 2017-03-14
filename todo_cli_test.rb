@@ -20,12 +20,6 @@ class TodoCliTest < Minitest::Test
   def teardown
     CreateTasksTableMigration.migrate(:down)
   end
-  #
-  # def test_will_puts_to_stdout_args_passed_in
-  #   assert_output(/I should make a task/) do
-  #     TodoCli.new(["new", "i am a task"])
-  #   end
-  # end
 
   def test_task_can_be_created
     assert_output(/Created a Task: grocery list/) do
@@ -35,15 +29,25 @@ class TodoCliTest < Minitest::Test
   end
 
   def test_task_has_priority
-    assert_output(/high priority/) do
-      TodoCli.new(["new", "high priority"])
+    task = Task.create(name: "get groceries", priority: "medium")
+    assert_output(/Task Priority: medium/) do
+      TodoCli.new(["priority", task.id])
     end
   end
 
   def test_task_completed
-    new_task = TodoCli.new(["new", "high priority"])
-    new_task.completed(new_task.task_id)
-    #I am aware this doesn't pass, I'm working on it
-    assert_in_delta Time.now, new_task.completed_at, 0.1
+    task = Task.create(name: "eating", priority: "Urgent")
+    assert_output(/Eating is completed/) do
+      TodoCli.new(["complete", task.id])
+    end
+    task.reload
+    assert_in_delta Time.now, task.completed_at, 0.1
+  end
+
+  def test_list_all_tasks
+    Task.create(name: "sleeping", priority: "low")
+    Task.create(name: "homework", priority: "high")
+    TodoCli.new(["list tasks"])
+    binding.pry
   end
 end

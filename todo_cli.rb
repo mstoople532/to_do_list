@@ -5,37 +5,39 @@ class TodoCli
   attr_reader :args
   def initialize(args)
     @args = args
-
-    # Extract the "subcommand"
     case @args.first
     when "new"
       new_task
-    when "name"
-      name
+    when "list tasks"
+      list_all_tasks
     when "priority"
-      priority
+      priority(@args[1])
     when "complete"
-
+      completed(@args[1])
+    else
+      puts "Please enter valid request"
     end
   end
 
   def new_task
-    task = Task.new(name: args[1])
-    task.save
+    task = Task.create(name: args[1], priority: args[2])
     puts "Created a Task: #{task.name}"
-  end
-
-  def name
   end
 
   def priority(task_id)
     task = Task.find(task_id)
-    task.priority(@args[1])
+    task.priority
+    puts "Task priority: #{task.priority}"
   end
 
   def completed(task_id)
     task = Task.find(task_id)
     task.completed_at = Time.now
     task.save
+    puts "#{task.name.capitalize} is completed"
+  end
+
+  def list_all_tasks
+    Task.all
   end
 end
