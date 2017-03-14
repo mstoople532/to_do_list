@@ -43,11 +43,4 @@ class TodoCliTest < Minitest::Test
     task.reload
     assert_in_delta Time.now, task.completed_at, 0.1
   end
-
-  def test_list_all_tasks
-    Task.create(name: "sleeping", priority: "low")
-    Task.create(name: "homework", priority: "high")
-    TodoCli.new(["list tasks"])
-    binding.pry
-  end
 end

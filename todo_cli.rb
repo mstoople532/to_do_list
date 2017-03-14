@@ -27,7 +27,7 @@ class TodoCli
   def priority(task_id)
     task = Task.find(task_id)
     task.priority
-    puts "Task priority: #{task.priority}"
+    puts "Task Priority: #{task.priority}"
   end
 
   def completed(task_id)
